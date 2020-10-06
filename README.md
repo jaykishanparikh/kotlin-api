@@ -253,4 +253,3 @@ There is a [postman configuration](./doc/postman/MobileAPI.postman_collection.js
     }
 ]
   ```
-## Unit Testing
