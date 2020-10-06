@@ -1,0 +1,126 @@
+openapi: 3.0.0
+servers:
+  - url: "https://{server-name}:{server-port}/countries/"
+    variables:
+      server-name:
+        default: localhost
+        enum:
+          - localhost
+          - gateway.inteqweb.com.au
+          - gateway-uat.inteqweb.com.au
+          - gateway-staging.inteqweb.com.au
+          - gateway-sit.inteqweb.com.au
+          - gateway-dev.inteqweb.com.au
+      server-port:
+        default: "8080"
+        enum:
+          - "8080"
+          - "8085"
+info:
+  title: Country API Specification
+  version: "1.0"
+  description: Internal use only - This document is for the Countries Microservice application deployed for example purpose.
+  termsOfService: www.inteqweb.com.au/termsOfService
+paths:
+  "/countries":
+    summary: Country details.
+    description: Rest Api to get country details such as name, iso3 & iso2 code, Phone Code etc.
+    get:
+      summary: Get all countries details.
+      description: "Get details of all countries."
+      operationId: findAll
+      responses:
+        "200":
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Country"
+        "400":
+          description: Invalid PATH parameter supplied.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Inquire details of all countries
+  "/countries/countryCode":
+    summary: Specific country details.
+    description: Rest Api to get a specific country details based on the country name passed.
+    get:
+      summary: Get details of a specific country.
+      description: "Get details of a specific country."
+      operationId: findByName
+      parameters:
+        - name: countryName
+          in: query
+          description: country name in CamelCase
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Country"
+        "400":
+          description: Invalid PATH parameter supplied.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Inquire details of all countries
+components:
+  schemas:
+    Country:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: Australia
+        iso3:
+          type: string
+          example: AUS
+        iso2:
+          type: string
+          example: AU
+        phone_code:
+          type: string
+          example: 61
+        capital:
+          type: string
+          example: Canberra
+        currency:
+          type: string
+          example: AUD
+        native:
+          type: string
+          example: Australia
+        emoji:
+          type: string
+          example: "🇦🇺"
+        emojiU:
+          type: string
+          example: "U+1F1E6 U+1F1FA"
+    SuccessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: fail
+        reason:
+          type: array
+          items:
+            type: string
+            example: issuedescription
